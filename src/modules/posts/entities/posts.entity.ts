@@ -1,6 +1,8 @@
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -16,12 +18,29 @@ export class Post {
   @Column()
   title: string;
 
-  @Column('text')
+  @Column({ type: 'text' })
   content: string;
+
+  @Column({ default: 0 })
+  priority: number; // для админа, поднимать пост
 
   @ManyToOne(() => User, (user) => user.posts)
   author: User;
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+
+  @ManyToMany(() => User, (user) => user.likedPosts)
+  @JoinTable()
+  likedBy: User[];
+
+  @ManyToMany(() => User, (user) => user.dislikedPosts)
+  @JoinTable()
+  dislikedBy: User[];
+
+  @ManyToMany(() => User, (user) => user.favoritePosts)
+  favoriteBy: User[];
+
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 }

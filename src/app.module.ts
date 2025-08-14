@@ -9,6 +9,9 @@ import { User } from './modules/users/entities/users.entity';
 import { Role } from './modules/roles/entities/roles.entity';
 import { Post } from './modules/posts/entities/posts.entity';
 import { Comment } from './modules/comments/entities/comments.entity';
+import { UserProfile } from './modules/users/entities/user-profile.entity';
+
+export const ALL_ENTITIES = [User, Role, Post, Comment, UserProfile];
 
 @Module({
   imports: [
@@ -20,10 +23,9 @@ import { Comment } from './modules/comments/entities/comments.entity';
       username: 'postgres',
       password: 'root',
       database: 'whitebird',
-      entities: [User, Role, Post, Comment],
-      synchronize: true,
+      entities: ALL_ENTITIES,
+      synchronize: false,
     }),
-    TypeOrmModule.forFeature([User, Role, Post, Comment]),
     RolesModule,
     PostsModule,
     CommentsModule,
